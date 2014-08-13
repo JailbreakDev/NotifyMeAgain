@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>NotfifyMeAgain by Jack (@sharedRoutine)</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.sharedroutine.notifyme</string>
+			<key>key</key>
+			<string>kEnabled</string>
+			<key>label</key>
+			<string>Enabled</string>
+			<key>get</key>
+			<string>getEnabledForSpecifier:</string>
+			<key>set</key>
+			<string>setEnabled:forSpecifier:</string>
+			<key>PostNotification</key>
+			<string>com.sharedroutine.notifymeagain.settingschanged</string>
+			<key>id</key>
+			<string>enableswitch</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Swipe Settings</string>
+			<key>footerText</key>
+			<string>You can swipe either to the right or to the left on a notification banner. You can set the delay for a right as well as for a left swipe after which the notification will be shown again to remind you.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>defaults</key>
+			<string>com.sharedroutine.notifymeagain</string>
+			<key>default</key>
+			<real>300</real>
+			<key>key</key>
+			<string>kLeftDelay</string>
+			<key>label</key>
+			<string>Left Swipe Delay</string>
+			<key>titlesDataSource</key>
+			<string>validTitles:</string>
+			<key>valuesDataSource</key>
+			<string>validValues:</string>
+			<key>PostNotification</key>
+			<string>com.sharedroutine.notifymeagain.settingschanged</string>
+			<key>id</key>
+			<string>rightdelay</string>
+			<key>enabled</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>defaults</key>
+			<string>com.sharedroutine.notifymeagain</string>
+			<key>default</key>
+			<real>300</real>
+			<key>key</key>
+			<string>kRightDelay</string>
+			<key>label</key>
+			<string>Right Swipe Delay</string>
+			<key>titlesDataSource</key>
+			<string>validTitles:</string>
+			<key>valuesDataSource</key>
+			<string>validValues:</string>
+			<key>PostNotification</key>
+			<string>com.sharedroutine.notifymeagain.settingschanged</string>
+			<key>id</key>
+			<string>leftdelay</string>
+			<key>enabled</key>
+			<false/>
+		</dict>
+	</array>
+	<key>title</key>
+	<string>NotfifyMeAgain Settings</string>
+</dict>
+</plist>
