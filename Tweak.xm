@@ -18,12 +18,19 @@
 -(id)source;
 @end
 
-@protocol SRPickerViewDelegate
-@required
--(void)didSelectDelay:(NSNumber *)delay;
+@interface SBDefaultBannerTextView : UIView
+@property (nonatomic,copy) NSString * primaryText;
+@property (nonatomic,copy) NSString * secondaryText; 
 @end
 
-@interface SBDefaultBannerView : UIView <SRPickerViewDelegate>
+@interface SBBannerController : NSObject
++(id)sharedInstance;
+-(void)dismissBannerWithAnimation:(BOOL)arg1 reason:(int)arg2;
+@end
+
+@interface SBDefaultBannerView : UIView  {
+	SBDefaultBannerTextView *_textView; 
+}
 -(id)initWithFrame:(CGRect)frame; 
 -(id)initWithContext:(SBUIBannerContext *)context;
 -(SBUIBannerContext *)bannerContext;
@@ -86,7 +93,6 @@ BOOL enabled;
 %new
 
 -(void)notifyMeAgain:(BBBulletin *)bulletin afterDelay:(NSTimeInterval)delay {
-	NSLog(@"Delay For %.f Seconds",delay);
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void) {
        	[[%c(SBBulletinBannerController) sharedInstance] _queueBulletin:bulletin];
     });
@@ -95,14 +101,20 @@ BOOL enabled;
 %new
 
 -(void)nma_swipedBannerView:(UISwipeGestureRecognizer *)recognizer {
+	SBDefaultBannerTextView *textView = [self valueForKey:@"_textView"];
+	[textView setPrimaryText:@"Notification delayed"]; //notify user of dismiss
 	if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
 		[self notifyMeAgain:[self nma_bulletin] afterDelay:rightDelay];
-		NSLog(@"Right Swipe");
+		[textView setSecondaryText:[NSString stringWithFormat:@"for %.f Minute(s)",rightDelay/60]];
 	} else if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
 		[self notifyMeAgain:[self nma_bulletin] afterDelay:leftDelay];
-		NSLog(@"Left Swipe");
+		[textView setSecondaryText:[NSString stringWithFormat:@"for %.f Minute(s)",leftDelay/60]];
 	}
-
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void) {
+       	[[%c(SBBannerController) sharedInstance] dismissBannerWithAnimation:TRUE reason:1337]; //dismiss
+    });
+	
 }
 
 %end
@@ -112,8 +124,6 @@ void loadSettings(void) {
 	if (preferences) {
 		preferences = nil;
 	}
-
-	NSLog(@"PLIST_PATH: %@",PLIST_PATH);
 
 	preferences = [NSDictionary dictionaryWithContentsOfFile:PLIST_PATH];
 	enabled = [preferences objectForKey:@"kEnabled"] ? [[preferences objectForKey:@"kEnabled"] boolValue] : TRUE;
